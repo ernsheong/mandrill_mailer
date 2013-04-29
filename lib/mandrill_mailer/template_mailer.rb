@@ -228,11 +228,9 @@ module MandrillMailer
         "merge_vars" => mandrill_rcpt_args(args[:recipient_vars]),
         "tags" => args[:tags],
         "google_analytics_domains" => args[:google_analytics_domains],
-        "google_analytics_campaign" => args[:google_analytics_campaign]
+        "google_analytics_campaign" => args[:google_analytics_campaign],
+        "attachments" => mandrill_attachment_args(args[:attachments])
         # "metadata" =>["..."],
-        # "attachments" =>[
-        #   {"type" => "example type", "name" => "example name", "content" => "example content"}
-        # ]
       }
 
       # return self so we can chain deliver after the method call, like a normal mailer.
@@ -300,6 +298,13 @@ module MandrillMailer
       return [] unless args
       args.map do |k,v|
         {'name' => k, 'content' => v}
+      end
+    end
+
+    def mandrill_attachment_args(args)
+      return [] unless args
+      args.map do |file|
+        file.stringify_keys
       end
     end
 
